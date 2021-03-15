@@ -8,15 +8,13 @@ import javax.persistence.Id;
 @Entity
 public class Company {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companyId;
-
     private String name;
     private String city;
     private String profile;
 
     public Company(Long companyId, String name, String city, String profile) {
-        this.companyId = companyId;
         this.name = name;
         this.city = city;
         this.profile = profile;
@@ -28,10 +26,6 @@ public class Company {
 
     public Long getCompanyId() {
         return companyId;
-    }
-
-    public void setCompanyId(Long companyId) {
-        this.companyId = companyId;
     }
 
     public String getName() {
