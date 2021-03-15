@@ -11,7 +11,7 @@
     <groupId>com.osde</groupId>
     <artifactId>prepo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>prepo</name>
     <description>Provider Repository for Outsourcing Portal</description>
     <properties>
