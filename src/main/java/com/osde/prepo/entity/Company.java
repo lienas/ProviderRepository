@@ -17,7 +17,7 @@ public class Company {
 
     private String ownerId; // Id of the user, who created the entry
 
-    @NotNull(message = "Please provide a name for the company")
+    @NotNull(message="Please provide a name for the company")
     private String name; // Company Name
 
     private String city; // City where the company resides
