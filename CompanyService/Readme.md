@@ -1,4 +1,4 @@
-#Provider Service
+#Company Service
 ## Introduction
 This API is a RestFull-Service build with Spring-Boot and JPA. It provides endpoint to manage the base data for a company.
 The base data includes:
