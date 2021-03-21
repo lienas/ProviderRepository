@@ -34,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").permitAll() //only GET-Request are without auth
                 .anyRequest().authenticated()
                 .and()
+                .cors()
+                .configurationSource(corsConfigurationSource())
+                .and()
                 .oauth2ResourceServer()
                 .jwt()
                 .decoder(jwtDecoder());

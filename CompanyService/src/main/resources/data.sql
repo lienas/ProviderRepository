@@ -1,3 +1,4 @@
+Delete from company;
 INSERT INTO company (company_Id, name, city,country, profile)
 VALUES (1, 'Company 1', 'Ort 1','Germany' ,'We are 1 ...');
 INSERT INTO company (company_Id, name, city,country, profile)
