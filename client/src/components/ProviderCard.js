@@ -10,10 +10,14 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
-        maxWidth: 345,
+        maxWidth: 200,
     },
     media: {
-        height: 100,
+        margin: "auto",
+        width: "auto"
+    },
+    header: {
+        height: 100
     }
 });
 
@@ -23,13 +27,15 @@ export default function ProviderCard(props) {
     return (
         <Card className={classes.root}>
             <CardActionArea>
+                <CardContent className={classes.header}>
                 <CardMedia
-                    classes={classes.media}
+                    className={classes.media}
                     component="img"
                     alt="placeholder"
                     image="/images/lienas-logo.png"
                     title="logo"
                 />
+                </CardContent>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                         {props.name}

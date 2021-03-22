@@ -21,7 +21,7 @@ export class ProviderList extends Component {
         return (
             <Grid container spacing={2}>
                 {this.state.companies.map(d =>
-                    <Grid item xs={3}>
+                    <Grid item xs={2}>
                         <ProviderCard name={d.name} profile={d.profile}/>
                     </Grid>)
                 }
