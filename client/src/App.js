@@ -1,7 +1,8 @@
 import {Box, Container, createMuiTheme, ThemeProvider} from "@material-ui/core";
 import {brown, lime, red} from "@material-ui/core/colors";
-import {ProviderList} from "./components/ProviderList";
+import ProviderList from "./components/ProviderList";
 import {Header} from "./components/ui/Header";
+import UserProfile from "./components/ui/UserProfile";
 
 const theme = createMuiTheme({
         palette: {
