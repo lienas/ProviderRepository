@@ -49,7 +49,7 @@ export default function ProviderCard(props) {
                 <Button size="small" color="primary">
                     Edit
                 </Button>
-                <Button size="small" color="danger">
+                <Button size="small" color="secondary">
                     delete
                 </Button>
             </CardActions>

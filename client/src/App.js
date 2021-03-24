@@ -1,49 +1,30 @@
-import {
-    AppBar,
-    Box,
-    Container,
-    createMuiTheme,
-    makeStyles,
-    ThemeProvider,
-    Toolbar,
-    Typography
-} from "@material-ui/core";
-import {brown, lime} from "@material-ui/core/colors";
+import {Box, Container, createMuiTheme, ThemeProvider} from "@material-ui/core";
+import {brown, lime, red} from "@material-ui/core/colors";
 import {ProviderList} from "./components/ProviderList";
+import {Header} from "./components/ui/Header";
 
 const theme = createMuiTheme({
         palette: {
             primary: {
-                main: lime[800]
+                main: lime[800],
+                contrastText: "#fff"
             },
             secondary: {
                 main: brown[300],
             },
+            danger: {
+                main: red
+            }
         }
     }
 )
 
-const useStyles = makeStyles({
-        title: {
-            color: "white"
-        }
-    }
-);
-
-
 function App() {
-    const classes = useStyles()
     return (
         <ThemeProvider theme={theme}>
-            <AppBar>
-                <Toolbar>
-                    <Typography className={classes.title}>
-                        Provider-Repository
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            <Header/>
             <Container>
-                <Box my={20}>
+                <Box my={10}>
                     <ProviderList/>
                 </Box>
             </Container>
