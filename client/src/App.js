@@ -2,7 +2,7 @@ import {Box, Container, createMuiTheme, ThemeProvider} from "@material-ui/core";
 import {brown, lime, red} from "@material-ui/core/colors";
 import ProviderList from "./components/ProviderList";
 import {Header} from "./components/ui/Header";
-import UserProfile from "./components/ui/UserProfile";
+import {useAuth0} from "@auth0/auth0-react";
 
 const theme = createMuiTheme({
         palette: {
@@ -21,12 +21,16 @@ const theme = createMuiTheme({
 )
 
 function App() {
+    const {isAuthenticated} = useAuth0();
     return (
         <ThemeProvider theme={theme}>
             <Header/>
             <Container>
                 <Box my={10}>
-                    <ProviderList/>
+                    {isAuthenticated ?
+                    <ProviderList/> :
+                        <h3>Please login</h3>
+                    }
                 </Box>
             </Container>
         </ThemeProvider>

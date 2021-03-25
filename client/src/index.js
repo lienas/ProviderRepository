@@ -4,15 +4,16 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {Auth0Provider} from "@auth0/auth0-react";
+import {domain, clientId, audience, scope} from "./config/auth0";
 
 ReactDOM.render(
     <React.StrictMode>
         <Auth0Provider
-            domain="dev-osde.eu.auth0.com"
-            clientId="9lWpw19xiFrl65IELoIChkmfR92t6OuH"
+            domain= {domain}
+            clientId={clientId}
             redirectUri={window.location.origin}
-            audience="https://dev-osde.eu.auth0.com/api/v2/"
-            scope="read:current_user update:current_user_metadata"
+            audience={audience}
+            scope={scope}
         >
             <App/>
         </Auth0Provider>
