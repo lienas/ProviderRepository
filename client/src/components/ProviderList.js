@@ -4,6 +4,7 @@ import ProviderCard from "./ProviderCard";
 import {Grid} from "@material-ui/core";
 import {useAuth0} from "@auth0/auth0-react";
 
+/* eslint-disable react-hooks/exhaustive-deps */
 
 const ProviderList = () => {
 
