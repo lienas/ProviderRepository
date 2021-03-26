@@ -11,17 +11,15 @@ const ProviderList = () => {
     const [companies, setCompanies] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    const getData = async () => {
-        const accessToken = await getAccessTokenSilently({
-            audience: `https://provider-api`
-        });
-        const provider = await _getAllProviders(accessToken);
-        if (provider) setCompanies(provider.companies)
-        setIsLoading(false)
-    };
-
     useEffect(() => {
-            //const domain = "dev-osde.eu.auth0.com";
+            const getData = async () => {
+                const accessToken = await getAccessTokenSilently({
+                    audience: `https://provider-api`
+                });
+                const provider = await _getAllProviders(accessToken);
+                if (provider) setCompanies(provider.companies)
+                setIsLoading(false)
+            };
             getData();
         }, []
     )
