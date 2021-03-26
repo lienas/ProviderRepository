@@ -3,6 +3,9 @@ import {brown, lime, red} from "@material-ui/core/colors";
 import ProviderList from "./components/ProviderList";
 import {Header} from "./components/ui/Header";
 import {useAuth0} from "@auth0/auth0-react";
+import {BrowserRouter as Router,  Route, Switch} from "react-router-dom";
+import {CreateProvider} from "./components/CreateProvider";
+import {EditProvider} from "./components/EditProvider";
 
 const theme = createMuiTheme({
         palette: {
@@ -23,17 +26,29 @@ const theme = createMuiTheme({
 function App() {
     const {isAuthenticated} = useAuth0();
     return (
-        <ThemeProvider theme={theme}>
-            <Header/>
-            <Container>
-                <Box my={10}>
-                    {isAuthenticated ?
-                        <ProviderList/> :
-                        <h3>Please login</h3>
-                    }
-                </Box>
-            </Container>
-        </ThemeProvider>
+        <Router>
+            <ThemeProvider theme={theme}>
+                <Header/>
+                <Switch>
+                    <Route path="/create">
+                        <CreateProvider/>
+                    </Route>
+                    <Route path="/edit">
+                        <EditProvider/>
+                    </Route>
+                    <Route path="/">
+                        <Container>
+                            <Box my={5}>
+                                {isAuthenticated ?
+                                    <ProviderList/> :
+                                    <h3>Please login</h3>
+                                }
+                            </Box>
+                        </Container>
+                    </Route>
+                </Switch>
+            </ThemeProvider>
+        </Router>
     );
 }
 
