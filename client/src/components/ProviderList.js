@@ -34,9 +34,10 @@ const ProviderList = () => {
         }
     )
 
-    const deleteHandler = (url) => {
+    const deleteHandler = async (url) => {
         method("delete");
-        doFetch(url).then(forceUpdate);
+        await doFetch(url);
+        forceUpdate();
         //force refetching of list
     }
 
