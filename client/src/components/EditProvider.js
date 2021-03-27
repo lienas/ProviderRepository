@@ -4,6 +4,7 @@ import {Backdrop, CircularProgress, Container, Grid, makeStyles, Paper, TextFiel
 import Button from "@material-ui/core/Button";
 import {DropzoneArea} from 'material-ui-dropzone'
 import {useProviderApi} from "../api/useProviderAPI";
+import {useLocation} from "react-router";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +37,8 @@ export const EditProvider = (props) => {
             country: "",
             profile: ""
         });
-    const url = "http://localhost:8080/api/companies/1";
+    let location = useLocation();
+    const url = location.state ? location.state.url : undefined;
 
     const handleChange = (event) => {
         setProvider({...provider, [event.target.id]: event.target.value});
@@ -47,13 +49,15 @@ export const EditProvider = (props) => {
             await doFetch(url);
             setProvider({...provider, ...data});
         }
-        getdata();
+        if (edit) {
+            getdata();
+        }
 
     }, [doFetch, data])
 
     console.log("data = ", JSON.stringify(data));
     console.log("provider", JSON.stringify(provider));
-
+    console.log("location", JSON.stringify(location));
 
     return (
         <Container>

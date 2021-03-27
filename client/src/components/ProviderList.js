@@ -47,7 +47,7 @@ const ProviderList = () => {
                 {companies ?
                     companies.map(d =>
                         <Grid item xs={6} md={3} lg={2} key={d._links.self.href}>
-                            <ProviderCard name={d.name} profile={d.profile}/>
+                            <ProviderCard name={d.name} profile={d.profile} url={d._links.self.href}/>
                         </Grid>) :
                     <h2>no companies</h2>
                 }

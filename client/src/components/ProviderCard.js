@@ -48,7 +48,10 @@ export default function ProviderCard(props) {
             </CardActionArea>
             <CardActions>
                 <Button size="small" color="primary">
-                    <Link to="/edit">edit</Link>
+                    <Link to={{
+                        pathname: "/edit",
+                        state: {url: props.url}
+                    }}>edit</Link>
                 </Button>
                 <Button size="small" color="secondary">
                     delete
