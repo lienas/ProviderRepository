@@ -1,48 +1,94 @@
-import React, {Component} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {
-    Container,
-    FormControl,
-    FormHelperText, Grid,
-    Input,
-    InputLabel, TextField
-} from "@material-ui/core";
+import {Backdrop, CircularProgress, Container, Grid, makeStyles, Paper, TextField} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import {withStyles} from "@material-ui/styles";
 import {DropzoneArea} from 'material-ui-dropzone'
+import {useProviderApi} from "../api/useProviderAPI";
 
-const styles = theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
             margin: theme.spacing(1),
-            width: '100ch',
+            width: '90ch',
         },
     },
     btn: {
         marginBottom: 25,
-    }
-});
+    },
+    paper: {
+        padding: 5,
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
+}));
 
-export class EditProvider extends Component {
+export const EditProvider = (props) => {
 
-    render() {
-        const {edit} = this.props
-        const {classes} = this.props
+    const [{data, isLoading, isError}, doFetch] = useProviderApi();
+    const classes = useStyles();
+    const {edit} = props;
+    const [provider, setProvider] = useState(
+        {
+            name: "",
+            city: "",
+            country: "",
+            profile: ""
+        });
+    const url = "http://localhost:8080/api/companies/1";
 
-        return (
-            <Container>
-                <h2>{edit ? 'Edit' : 'New'} Provider </h2>
-                <Button variant="outlined" className={classes.btn}>
-                    <Link to="/">Home</Link>
-                </Button>
+    const handleChange = (event) => {
+        setProvider({...provider, [event.target.id]: event.target.value});
+    };
+
+    useEffect(() => {
+        const getdata = async () => {
+            await doFetch(url);
+            setProvider({...provider, ...data});
+        }
+        getdata();
+
+    }, [doFetch, data])
+
+    console.log("data = ", JSON.stringify(data));
+    console.log("provider", JSON.stringify(provider));
+
+
+    return (
+        <Container>
+
+            <Backdrop className={classes.backdrop} open={isLoading}>
+                <CircularProgress color="inherit"/>
+            </Backdrop>
+
+            <h2>{edit ? 'Edit' : 'New'} Provider </h2>
+            <Button variant="outlined" className={classes.btn}>
+                <Link to="/">Home</Link>
+            </Button>
+            <Paper className={classes.paper}>
                 <Grid container>
-                    <Grid item>
+                    <Grid>
                         <form className={classes.root}>
                             <img/>
-                            <div><TextField id="name" label="name"/></div>
-                            <div><TextField id="city" label="city"/></div>
-                            <div><TextField id="country" label="country"/></div>
-                            <div><TextField fullWidth id="profile" label="profile" multiline rows={5}/></div>
+                            <div>
+                                <TextField id="name" label="name"
+                                           value={provider ? provider.name : ""}
+                                           onChange={handleChange}/>
+                            </div>
+                            <div>
+                                <TextField id="city" label="city"
+                                           value={provider ? provider.city : ""}
+                                           onChange={handleChange}/>
+                            </div>
+                            <div><TextField id="country" label="country"
+                                            value={provider ? provider.country : ""}
+                                            onChange={handleChange}/>
+                            </div>
+                            <div><TextField fullWidth id="profile" label="profile" multiline rows={5}
+                                            value={provider ? provider.profile : ""}
+                                            onChange={handleChange}/>
+                            </div>
                             <div><Button>Submit</Button></div>
                         </form>
                     </Grid>
@@ -55,10 +101,8 @@ export class EditProvider extends Component {
                         />
                     </Grid>
                 </Grid>
+            </Paper>
 
-            </Container>
-        )
-    }
+        </Container>
+    )
 }
-
-export default withStyles(styles)(EditProvider)

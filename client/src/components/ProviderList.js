@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
-import {_getAllProviders} from "../api/provider-api";
+import React, {useEffect} from "react";
 import ProviderCard from "./ProviderCard";
-import {Grid, makeStyles} from "@material-ui/core";
-import {useAuth0} from "@auth0/auth0-react";
+import {Backdrop, CircularProgress, Container, Grid, makeStyles} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import {useProviderApi} from "../api/useProviderAPI";
+import {useAuth0} from "@auth0/auth0-react";
 
 /* eslint-disable react-hooks/exhaustive-deps */
 const useStyles = makeStyles((theme) => ({
@@ -20,35 +20,27 @@ const useStyles = makeStyles((theme) => ({
 
 const ProviderList = () => {
 
-    const {isAuthenticated, getAccessTokenSilently} = useAuth0();
-    const [companies, setCompanies] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
     const classes = useStyles();
-
+    const [{data, isLoading, isError}, doFetch] = useProviderApi();
+    const {isAuthenticated} = useAuth0();
+    const {companies} = data ? data._embedded : [];
 
     useEffect(() => {
-            const getData = async () => {
-                const accessToken = await getAccessTokenSilently({
-                    audience: `https://provider-api`
-                });
-                const provider = await _getAllProviders(accessToken);
-                if (provider) setCompanies(provider.companies)
-                setIsLoading(false)
-            };
-            getData();
-        }, []
+            doFetch("http://localhost:8080/api/companies");
+        }
     )
-
-    if (isLoading) {
-        return <div>Loading ...</div>;
-    }
 
     return (
         isAuthenticated &&
         <React.Fragment>
+
+            <Backdrop className={classes.backdrop} open={isLoading}>
+                <CircularProgress color="inherit"/>
+            </Backdrop>
+
             <div className={classes.btn}>
                 <Button variant="outlined">
-                    <Link to="/create" >Create new provider</Link>
+                    <Link to="/create">Create new provider</Link>
                 </Button>
             </div>
             <Grid container spacing={1}>

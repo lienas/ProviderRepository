@@ -4,7 +4,7 @@ import ProviderList from "./components/ProviderList";
 import {Header} from "./components/ui/Header";
 import {useAuth0} from "@auth0/auth0-react";
 import {BrowserRouter as Router,  Route, Switch} from "react-router-dom";
-import EditProvider from "./components/EditProvider";
+import {EditProvider} from "./components/EditProvider";
 
 const theme = createMuiTheme({
         palette: {
