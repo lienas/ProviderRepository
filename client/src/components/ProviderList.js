@@ -31,14 +31,12 @@ const ProviderList = () => {
     useEffect(() => {
             method("get");
             doFetch("http://localhost:8080/api/companies");
-            //return () => setReload(false);
         }
     )
 
     const deleteHandler = (url) => {
         method("delete");
-        doFetch(url);
-        forceUpdate();
+        doFetch(url).then(forceUpdate);
         //force refetching of list
     }
 
