@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -24,8 +24,9 @@ const useStyles = makeStyles({
 
 export default function ProviderCard(props) {
     const classes = useStyles();
+    const {deleteHandler} = props;
 
-    return (
+      return (
         <Card className={classes.root}>
             <CardActionArea>
                 <CardContent className={classes.header}>
@@ -53,7 +54,8 @@ export default function ProviderCard(props) {
                         state: {url: props.url}
                     }}>edit</Link>
                 </Button>
-                <Button size="small" color="secondary">
+                <Button size="small" color="secondary"
+                        onClick={()=>deleteHandler(props.url)}>
                     delete
                 </Button>
             </CardActions>

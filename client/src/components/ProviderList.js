@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import ProviderCard from "./ProviderCard";
 import {Backdrop, CircularProgress, Container, Grid, makeStyles} from "@material-ui/core";
 import {Link} from "react-router-dom";
@@ -21,14 +21,26 @@ const useStyles = makeStyles((theme) => ({
 const ProviderList = () => {
 
     const classes = useStyles();
-    const [{data, isLoading, isError}, doFetch] = useProviderApi();
+    const [{data, isLoading, isError}, doFetch, method] = useProviderApi();
     const {isAuthenticated} = useAuth0();
     const {companies} = data ? data._embedded : [];
+    const {href} = data ? data._links.self : [];
+    const forceUpdate = useState()[1].bind(null, {})
 
+    //todo: put base url of api in config !!!
     useEffect(() => {
+            method("get");
             doFetch("http://localhost:8080/api/companies");
+            //return () => setReload(false);
         }
     )
+
+    const deleteHandler = (url) => {
+        method("delete");
+        doFetch(url);
+        forceUpdate();
+        //force refetching of list
+    }
 
     return (
         isAuthenticated &&
@@ -40,14 +52,22 @@ const ProviderList = () => {
 
             <div className={classes.btn}>
                 <Button variant="outlined">
-                    <Link to="/create">Create new provider</Link>
+                    <Link to={{
+                        pathname: "/create",
+                        state: {url: href}
+                    }}>Create new provider</Link>
                 </Button>
             </div>
             <Grid container spacing={1}>
                 {companies ?
                     companies.map(d =>
                         <Grid item xs={6} md={3} lg={2} key={d._links.self.href}>
-                            <ProviderCard name={d.name} profile={d.profile} url={d._links.self.href}/>
+                            <ProviderCard
+                                name={d.name}
+                                profile={d.profile}
+                                url={d._links.self.href}
+                                deleteHandler={deleteHandler}
+                            />
                         </Grid>) :
                     <h2>no companies</h2>
                 }

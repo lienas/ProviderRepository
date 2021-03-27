@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const EditProvider = (props) => {
 
-    const [{data, isLoading, isError}, doFetch] = useProviderApi();
+    const [{data, isLoading, isError}, doFetch, method, body] = useProviderApi();
     const classes = useStyles();
     const {edit} = props;
     const [provider, setProvider] = useState(
@@ -38,26 +38,42 @@ export const EditProvider = (props) => {
             profile: ""
         });
     let location = useLocation();
-    const url = location.state ? location.state.url : undefined;
+    const url = location.state ? location.state.url : "";
 
     const handleChange = (event) => {
         setProvider({...provider, [event.target.id]: event.target.value});
     };
 
+    const submitHandler = async () => {
+        if (edit) {
+            method("patch");
+        } else {
+            method("post");
+        }
+        body(provider);
+        console.log("Submitting data for url " + url);
+        await doFetch(url);
+        if (isError) {
+            console.log("Error patching provider: " + provider.name)
+        }
+    }
+
+    console.log("location " + JSON.stringify(location));
+
     useEffect(() => {
         const getdata = async () => {
+            method("get");
             await doFetch(url);
             setProvider({...provider, ...data});
+            console.log("data = ", JSON.stringify(data));
         }
         if (edit) {
+            console.log("url = ", JSON.stringify(url));
             getdata();
         }
 
-    }, [doFetch, data])
+    }, [doFetch, data, location])
 
-    console.log("data = ", JSON.stringify(data));
-    console.log("provider", JSON.stringify(provider));
-    console.log("location", JSON.stringify(location));
 
     return (
         <Container>
@@ -93,9 +109,10 @@ export const EditProvider = (props) => {
                                             value={provider ? provider.profile : ""}
                                             onChange={handleChange}/>
                             </div>
-                            <div><Button>Submit</Button></div>
+                            <div><Button onClick={submitHandler}>Submit</Button></div>
                         </form>
                     </Grid>
+                    {edit &&
                     <Grid item>
                         <DropzoneArea
                             dropzoneText="Drag and drop Logo here or click"
@@ -104,6 +121,7 @@ export const EditProvider = (props) => {
                             }
                         />
                     </Grid>
+                    }
                 </Grid>
             </Paper>
 
