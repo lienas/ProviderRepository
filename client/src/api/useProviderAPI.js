@@ -32,6 +32,7 @@ export const useProviderApi = () => {
         }
         setIsLoading(false);
     };
+
     const patchData = async () => {
         setIsLoading(true);
         setIsError(false);
@@ -94,19 +95,26 @@ export const useProviderApi = () => {
             audience: `https://provider-api`
         });
         try {
+            //console.log ("token => ", token);
             console.log("deleting data for url: " + url);
             const response = await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "delete",
-            })
+            });
+            console.log ("response of data in API. ", );
+            //remove from data
+            const companies = data._embedded.companies;
+            console.log("companies", companies);
+            const updatedData = companies.filter((c) => c._links.self.href !== url);
+            console.log("updated data = ", updatedData);
+            //setData([...data,])
 
         } catch (e) {
             setIsError(true)
         }
         setIsLoading(false);
-
     }
 
     useEffect( () => {

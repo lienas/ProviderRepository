@@ -29,16 +29,16 @@ const ProviderList = () => {
 
     //todo: put base url of api in config !!!
     useEffect(() => {
+        console.log("effect in Providerliest triggered");
             method("get");
             doFetch("http://localhost:8080/api/companies");
         }
     )
 
-    const deleteHandler = async (url) => {
+    const deleteHandler = (url) => {
         method("delete");
-        await doFetch(url);
-        forceUpdate();
-        //force refetching of list
+        doFetch(url);
+        //forceUpdate();
     }
 
     return (
