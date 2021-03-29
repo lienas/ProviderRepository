@@ -103,13 +103,11 @@ export const useProviderApi = () => {
                 },
                 method: "delete",
             });
-            console.log ("response of data in API. ", );
             //remove from data
             const companies = data._embedded.companies;
-            console.log("companies", companies);
-            const updatedData = companies.filter((c) => c._links.self.href !== url);
-            console.log("updated data = ", updatedData);
-            //setData([...data,])
+            const updatedComp = companies.filter((c) => c._links.self.href !== url);
+            const updatedData = {...data, "_embedded": {...data._embedded, companies: updatedComp}};
+            setData(updatedData);
 
         } catch (e) {
             setIsError(true)
