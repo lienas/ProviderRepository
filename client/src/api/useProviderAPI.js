@@ -25,6 +25,7 @@ export const useProviderApi = () => {
                 }
             })
             const payload = await response.json();
+            console.log(payload);
             setData(payload);
 
         } catch (e) {

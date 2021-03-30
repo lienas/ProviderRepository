@@ -23,7 +23,7 @@ const ProviderList = () => {
     const classes = useStyles();
     const [{data, isLoading, isError}, doFetch, method] = useProviderApi();
     const {isAuthenticated} = useAuth0();
-    const {companies} = data ? data._embedded : [];
+    const {companies} = data && data._embedded ? data._embedded : [];
     const {href} = data ? data._links.self : [];
     const forceUpdate = useState()[1].bind(null, {})
 

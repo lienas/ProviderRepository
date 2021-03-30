@@ -1,12 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {Backdrop, CircularProgress, Container, Grid, makeStyles, Paper, TextField} from "@material-ui/core";
+import {Backdrop, CircularProgress, Container, Grid, makeStyles, Paper, Snackbar, TextField} from "@material-ui/core";
+import MuiAlert from '@material-ui/lab/Alert';
 import Button from "@material-ui/core/Button";
 import {DropzoneArea} from 'material-ui-dropzone'
 import {useProviderApi} from "../api/useProviderAPI";
 import {useLocation} from "react-router";
 import {useAuth0} from "@auth0/auth0-react";
 import Typography from "@material-ui/core/Typography";
+
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +51,7 @@ export const EditProvider = (props) => {
     const [blockFetching, setBlockFetching] = useState(false);
     let location = useLocation();
     const [url, setUrl] = useState(location.state ? location.state.url : "")
+    const [showInfo, setShowInfo] = useState(false);
 
     const handleChange = (event) => {
         setProvider({...provider, [event.target.id]: event.target.value});
@@ -62,7 +69,6 @@ export const EditProvider = (props) => {
         body(provider);
         console.log("Submitting data for url " + url);
         await doFetch(url);
-        console.log("state after submitting (iserror/editMode:", isError, editMode)
         if (isError) {
             console.log("Error patching provider: " + provider.name)
         } else if (isError === false && editMode === false) {
@@ -71,11 +77,17 @@ export const EditProvider = (props) => {
 
             setBlockFetching(true);
             setEditMode(true);
-
         }
+        setShowInfo(true);
     }
 
-    console.log("location " + JSON.stringify(location));
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setShowInfo(false);
+    }
+
 
     useEffect(() => {
         console.log("User: ", user ? user.sub : "n.a.");
@@ -91,14 +103,16 @@ export const EditProvider = (props) => {
             console.log("in edit mode::url = ", editMode, "::", JSON.stringify(url));
             getdata();
         } else if (blockFetching) {
+            //do not fetch, if switched to editmode -> data is already returned from post
             setProvider({...provider, ...data})
             console.log("data in effect after switching = ", JSON.stringify(data));
-            //set the url, so that put is possible
+            //set the url from response when switching (put url is different from post url)
             setUrl(data._links.self.href);
         }
 
     }, [doFetch, data, location])
 
+    const message = isError ? 'Something went wrong- Try again ' : 'successfully created/updated data'
 
     return (
         <Container>
@@ -107,10 +121,17 @@ export const EditProvider = (props) => {
                 <CircularProgress color="inherit"/>
             </Backdrop>
 
-            <h2>{editMode === true ? 'Edit' : 'New'} Provider </h2>
+            <Snackbar open={showInfo} autoHideDuration={2000} onClose={handleCloseAlert}>
+                <Alert onClose={handleCloseAlert} severity={isError ? "error" : "success"}>
+                    {message}
+                </Alert>
+            </Snackbar>
+
+            <h2>{editMode ? 'Edit' : 'New'} Provider </h2>
             <Button variant="outlined" className={classes.btn}>
                 <Link to="/">Home</Link>
             </Button>
+
             <Paper className={classes.paper}>
                 <Grid container>
                     <Grid item md={8}>

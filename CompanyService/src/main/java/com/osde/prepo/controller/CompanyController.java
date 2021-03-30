@@ -32,14 +32,18 @@ public class CompanyController {
         companyRepository = repo;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/api/companies/")
-    public @ResponseBody ResponseEntity<?> getAllCompaniesForCurrentUser() {
+    @RequestMapping(method = RequestMethod.GET, value = "/companies")
+    public @ResponseBody
+    ResponseEntity<?> getAllCompaniesForCurrentUser() {
         logger.info("custom implementation for get called!!");
-        List<Company> companies  = new ArrayList<>();
+        List<Company> companies = new ArrayList<>();
+        companies = companyRepository.findByOwnerId("google-oauth2|107634743108791790006");
 
         // convert to HATEOAS
         CollectionModel<Company> resources = CollectionModel.of(companies);
-        resources.add(linkTo(methodOn(CompanyController.class).getAllCompaniesForCurrentUser()).withSelfRel());
+        resources.add(linkTo(methodOn(CompanyController.class)
+                .getAllCompaniesForCurrentUser())
+                .withSelfRel());
 
         return ResponseEntity.ok(resources);
     }
