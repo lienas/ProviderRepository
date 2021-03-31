@@ -10,16 +10,14 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.EntityLinks;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 /**
  * customer controller to override some Data Rest Response Handlers
@@ -39,33 +37,34 @@ public class CompanyController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/companies")
     public @ResponseBody
-    ResponseEntity<?> getAllCompaniesForCurrentUser() {
+    ResponseEntity<?> getAllCompaniesForCurrentUser(Authentication authentication) {
         logger.info("custom implementation for get called!!");
-
-//        List<Company> companies = new ArrayList<>();
-//        companies = companyRepository.findByOwnerId("google-oauth2|107634743108791790006");
-//
-//        CollectionModel<Company> resources = CollectionModel.of(companies);
-//        resources.add(linkTo(methodOn(CompanyController.class)
-//                .getAllCompaniesForCurrentUser())
-//                .withSelfRel());
+        //todo: check class
+        Object principal = authentication.getPrincipal();
+        String Username = "";
+        if (principal instanceof Jwt) {
+            Username = ((Jwt) principal).getSubject();
+        }
+        logger.info("User = {}", Username);
 
         List<EntityModel<Company>> companies = companyRepository
-                .findByOwnerId("google-oauth2|107634743108791790006")
+                .findByOwnerId(Username)
                 .stream()
                 .map(this::generateLinks)
                 .collect(Collectors.toList());
 
+        CollectionModel<EntityModel<Company>> resource = CollectionModel.of(companies);
+        resource.add(entityLinks.linkToCollectionResource(Company.class));
+        //resource.add(entityLinks.linksToSearchResources(Company.class));
+        return ResponseEntity.ok().body(resource);
 
-        return ResponseEntity.ok().body(companies);
     }
+
 
     private EntityModel<Company> generateLinks(Company company) {
         EntityModel<Company> resource = EntityModel.of(company);
         resource.add(entityLinks.linkToItemResource(Company.class, company.getCompanyId()).withSelfRel());
         resource.add(entityLinks.linkToCollectionResource(Company.class));
-
-
 
 
         return resource;

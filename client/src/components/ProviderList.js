@@ -24,10 +24,9 @@ const ProviderList = () => {
     const [{data, isLoading, isError}, doFetch, method] = useProviderApi();
     const {isAuthenticated} = useAuth0();
     const {companies} = data && data._embedded ? data._embedded : [];
-    const {href} = data ? data._links.self : [];
-    const forceUpdate = useState()[1].bind(null, {})
-
-    //todo: put base url of api in config !!!
+    const {href} = data && !isLoading ? data._links.companies : [];
+    useState()[1].bind(null, {});
+//todo: put base url of api in config !!!
     useEffect(() => {
         console.log("effect in Providerliest triggered");
             method("get");
