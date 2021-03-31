@@ -39,7 +39,6 @@ public class CompanyController {
     public @ResponseBody
     ResponseEntity<?> getAllCompaniesForCurrentUser(Authentication authentication) {
         logger.info("custom implementation for get called!!");
-        //todo: check class
         Object principal = authentication.getPrincipal();
         String Username = "";
         if (principal instanceof Jwt) {
