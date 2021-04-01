@@ -19,7 +19,7 @@ export const useProviderApi = () => {
         });
         try {
             console.log("fetching data for url: ", url);
-            console.log("token =  ", token);
+            //console.log("token =  ", token);
 
             const response = await fetch(url, {
                 headers: {
