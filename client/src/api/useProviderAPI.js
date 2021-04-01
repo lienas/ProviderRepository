@@ -100,7 +100,7 @@ export const useProviderApi = () => {
         try {
             //console.log ("token => ", token);
             console.log("deleting data for url: " + url);
-            const response = await fetch(url, {
+            await fetch(url, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

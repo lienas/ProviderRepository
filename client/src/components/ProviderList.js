@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ProviderCard from "./ProviderCard";
-import {Backdrop, CircularProgress, Container, Grid, makeStyles} from "@material-ui/core";
+import {Backdrop, CircularProgress, Grid, makeStyles} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import {useProviderApi} from "../api/useProviderAPI";
@@ -43,7 +43,6 @@ const ProviderList = () => {
     return (
         isAuthenticated &&
         <React.Fragment>
-
             <Backdrop className={classes.backdrop} open={isLoading}>
                 <CircularProgress color="inherit"/>
             </Backdrop>
