@@ -19,7 +19,7 @@ export const useProviderApi = () => {
         });
         try {
             console.log("fetching data for url: ", url);
-            //console.log("token =  ", token);
+            console.log("token =  ", token);
 
             const response = await fetch(url, {
                 headers: {
@@ -98,7 +98,6 @@ export const useProviderApi = () => {
             audience: `https://provider-api`
         });
         try {
-            //console.log ("token => ", token);
             console.log("deleting data for url: " + url);
             await fetch(url, {
                 headers: {

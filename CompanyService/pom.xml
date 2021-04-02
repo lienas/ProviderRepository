@@ -48,6 +48,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
         <!-- use resource server according to
         https://arjunsk.medium.com/resource-server-with-cognito-b7fbfbee0155 for AWS Cognito
         or https://auth0.com/blog/spring-boot-authorization-tutorial-secure-an-api-java/# for Auth0-->

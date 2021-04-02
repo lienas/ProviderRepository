@@ -6,4 +6,4 @@ VALUES ('google-oauth2|107634743108791790006',2, 'Company 2', 'Ort 2','USA', 'We
 INSERT INTO company (owner_id, company_Id, name, city,country, profile)
 VALUES ('google-oauth2|107634743108791790006',3, 'Company 3', 'Ort 3','Hungary', 'We are 3 ...');
 INSERT INTO company (owner_id, company_Id, name, city,country, profile)
-VALUES ('google-oauth2|107634743108791790006',4, 'Company 4', 'Ort 4','China' ,'We are 4 ...');
+VALUES ('auth0|604349d1de499f0071149af5',4, 'Company 4', 'Ort 4','China' ,'We are 4 ...');
