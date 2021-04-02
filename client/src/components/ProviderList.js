@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import {useProviderApi} from "../api/useProviderAPI";
 import {useAuth0} from "@auth0/auth0-react";
+import {COMPANY_SERVICE_URL} from "../config/endpoints";
 
 /* eslint-disable react-hooks/exhaustive-deps */
 const useStyles = makeStyles((theme) => ({
@@ -25,12 +26,13 @@ const ProviderList = () => {
     const {isAuthenticated} = useAuth0();
     const {companies} = data && data._embedded ? data._embedded : [];
     const {href} = data && !isLoading ? data._links.companies : [];
-    useState()[1].bind(null, {});
+
 //todo: put base url of api in config !!!
+
     useEffect(() => {
         console.log("effect in Providerliest triggered");
             method("get");
-            doFetch("http://localhost:8080/api/companies");
+            doFetch(COMPANY_SERVICE_URL);
         }
     )
 
