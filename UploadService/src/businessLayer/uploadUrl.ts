@@ -29,7 +29,7 @@ export async function getUploadUrl(companyId: string, userId: string): Promise<a
 
     try {
         //get the download-url
-        attachmentUrl = await s3Client.getSignedUrl('getObject', {
+        attachmentUrl = await s3Client.getSignedUrl('putObject', {
                 Bucket: bucket,
                 Key: companyId
             }
