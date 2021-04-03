@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
     media: {
         margin: "auto",
-        width: "auto"
+        width: "100"
     },
     header: {
         height: 100
@@ -34,7 +34,7 @@ export default function ProviderCard(props) {
                     className={classes.media}
                     component="img"
                     alt="placeholder"
-                    image="/images/lienas-logo.png"
+                    image={props.logoUrl}
                     title="logo"
                 />
                 </CardContent>

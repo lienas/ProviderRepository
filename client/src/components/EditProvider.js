@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 export const EditProvider = (props) => {
 
-    const [{data, isLoading, isError}, doFetch, method, body] = useProviderApi();
+    const [{data, isLoading, isError}, doFetch, method, body, setLogo, setUploadUrl] = useProviderApi();
     const [{uploadUrl, isLoadingUploadUrl, isErrorUploadUrl}, doFetchUploadUrl] = useUploadAPI();
     const {user} = useAuth0();
     const classes = useStyles();
@@ -55,7 +55,7 @@ export const EditProvider = (props) => {
     const [url, setUrl] = useState(location.state ? location.state.url : "")
     const [showInfo, setShowInfo] = useState(false);
     const [companyId, setCompanyId] = useState();
-    const [logo, setLogo] = useState();
+    const [isUploadLogo, setIsUploadLogo] = useState();
 
     const handleChange = (event) => {
         setProvider({...provider, [event.target.id]: event.target.value});
@@ -65,10 +65,12 @@ export const EditProvider = (props) => {
         console.log("state in submithandler user/editMode = ", user.sub, editMode)
         if (editMode === true) {
             method("patch");
+            if (isUploadLogo && !isErrorUploadUrl) {
+                setUploadUrl(uploadUrl);
+                setIsUploadLogo(false);
+            }
         } else {
             method("post");
-            // add user
-            console.log("Provider in handler changed to ", JSON.stringify(provider))
         }
         body(provider);
         console.log("Submitting data for url " + url);
@@ -95,12 +97,16 @@ export const EditProvider = (props) => {
     const handleFileUploadChange = async (files) => {
         console.log('get Upload Url for the following file:', files);
         setLogo(files[0]);
-        await doFetchUploadUrl('logo_' + companyId);
+        setIsUploadLogo(true);
+        if (files.length > 0) {
+            await doFetchUploadUrl('logo_' + companyId);
+        }
     }
 
     useEffect(() => {
 
         const getdata = async () => {
+
             method("get");
             await doFetch(url);
             setProvider({...provider, ...data});

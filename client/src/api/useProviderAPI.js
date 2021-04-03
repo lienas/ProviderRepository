@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import {useAuth0} from "@auth0/auth0-react";
+import {S3_DOWNLOAD_URL} from "../config/endpoints";
+import {getCompanyIdFromEndpoint} from "../helpers/helperFunctions";
 
 export const useProviderApi = () => {
 
@@ -10,6 +12,8 @@ export const useProviderApi = () => {
     const {getAccessTokenSilently} = useAuth0();
     const [method, setMethod] = useState(undefined)
     const [body, setBody] = useState(undefined);
+    const [logo, setLogo] = useState(undefined);
+    const [uploadUrl, setUploadUrl] = useState(undefined);
 
     const getData = async () => {
         setIsLoading(true);
@@ -44,6 +48,18 @@ export const useProviderApi = () => {
             audience: `https://provider-api`
         });
         try {
+            console.log("check for logo...");
+            let logoUrl = body.logoUrl;
+            if (logo && uploadUrl) {
+                const response = await fetch(uploadUrl, {
+                    method: "put",
+                    body: logo
+                })
+                if (response.status === 200) {
+                    console.log ('body: ', JSON.stringify(body));
+                    logoUrl = S3_DOWNLOAD_URL+ '/logo_' + getCompanyIdFromEndpoint(url);
+                }
+            }
             console.log("patching data for url: ", url);
             const response = await fetch(url, {
                 headers: {
@@ -51,9 +67,10 @@ export const useProviderApi = () => {
                     'Content-Type': 'application/json'
                 },
                 method: "put",
-                body: JSON.stringify(body)
+                body: JSON.stringify({...body, logoUrl: logoUrl})
             })
             const payload = await response.json();
+
             setData(payload);
 
         } catch (e) {
@@ -117,7 +134,8 @@ export const useProviderApi = () => {
         setIsLoading(false);
     }
 
-    useEffect( () => {
+
+    useEffect(() => {
         if (url) {
             console.log("Effect invoked")
             switch (method) {
@@ -139,5 +157,5 @@ export const useProviderApi = () => {
         }
     }, [url, method])
 
-    return [{data, isLoading, isError}, setUrl, setMethod, setBody]
+    return [{data, isLoading, isError}, setUrl, setMethod, setBody, setLogo, setUploadUrl]
 }

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {UPLOAD_URL} from "../config/endpoints";
+import {S3_UPLOAD_URL} from "../config/endpoints";
 import {useAuth0} from "@auth0/auth0-react";
 
 
@@ -19,7 +19,7 @@ export const useUploadAPI = () => {
         try {
 
             console.log('Fetch Upload-Url')
-            const endpoint = UPLOAD_URL + '/logo/' + key + '/attachment';
+            const endpoint = S3_UPLOAD_URL + '/logo/' + key + '/attachment';
             console.log('endpoint: ', endpoint);
             const response = await fetch(endpoint, {
                 headers: {

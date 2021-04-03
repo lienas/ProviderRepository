@@ -65,6 +65,7 @@ const ProviderList = () => {
                                 name={d.name}
                                 profile={d.profile}
                                 url={d._links.self.href}
+                                logoUrl = {d.logoUrl ? d.logoUrl : 'images/nologo.png'}
                                 deleteHandler={deleteHandler}
                             />
                         </Grid>) :
