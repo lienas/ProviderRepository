@@ -10,12 +10,10 @@ D[(S3)]
 E[(mySQl)]
 A-->B
 B-->E
-A-->D
+A--upload-->D
 B-->C
-C--presigned Url-->B
-B--presigned Url-->A
 D--presigned Url-->C
-C-->D
+C--presigned Url-->A
 ````
 
 ### company service
