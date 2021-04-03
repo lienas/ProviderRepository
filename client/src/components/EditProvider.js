@@ -8,7 +8,8 @@ import {useProviderApi} from "../api/useProviderAPI";
 import {useLocation} from "react-router";
 import {useAuth0} from "@auth0/auth0-react";
 import Typography from "@material-ui/core/Typography";
-
+import {useUploadAPI} from "../api/useUploadAPI";
+import {getCompanyIdFromEndpoint} from "../helpers/helperFunctions";
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export const EditProvider = (props) => {
 
     const [{data, isLoading, isError}, doFetch, method, body] = useProviderApi();
+    const [{uploadUrl, isLoadingUploadUrl, isErrorUploadUrl}, doFetchUploadUrl] = useUploadAPI();
     const {user} = useAuth0();
     const classes = useStyles();
     const {edit} = props;
@@ -52,6 +54,8 @@ export const EditProvider = (props) => {
     let location = useLocation();
     const [url, setUrl] = useState(location.state ? location.state.url : "")
     const [showInfo, setShowInfo] = useState(false);
+    const [companyId, setCompanyId] = useState();
+    const [logo, setLogo] = useState();
 
     const handleChange = (event) => {
         setProvider({...provider, [event.target.id]: event.target.value});
@@ -88,10 +92,13 @@ export const EditProvider = (props) => {
         setShowInfo(false);
     }
 
+    const handleFileUploadChange = async (files) => {
+        console.log('get Upload Url for the following file:', files);
+        setLogo(files[0]);
+        await doFetchUploadUrl('logo_' + companyId);
+    }
 
     useEffect(() => {
-        console.log("User: ", user ? user.sub : "n.a.");
-        console.log("state in effect editMode = ", editMode)
 
         const getdata = async () => {
             method("get");
@@ -108,6 +115,9 @@ export const EditProvider = (props) => {
             console.log("data in effect after switching = ", JSON.stringify(data));
             //set the url from response when switching (put url is different from post url)
             setUrl(data._links.self.href);
+        }
+        if (!isLoading && editMode) {
+            setCompanyId(getCompanyIdFromEndpoint(url));
         }
 
     }, [doFetch, data, location])
@@ -134,10 +144,13 @@ export const EditProvider = (props) => {
 
             <Paper className={classes.paper}>
                 <Grid container>
-                    <Grid item md={8}>
+                    <Grid item md={6}>
                         <form className={classes.root}>
                             <Typography color="secondary" variant="caption">{provider.ownerId}</Typography>
-                            <img/>
+                            <div>
+                                <img alt={provider ? provider.name : ""}
+                                     src={provider && provider.logoUrl ? provider.logoUrl : 'images/nologo.png'}/>
+                            </div>
                             <div>
                                 <TextField id="name" label="name"
                                            value={provider ? provider.name : ""}
@@ -164,8 +177,10 @@ export const EditProvider = (props) => {
                         <DropzoneArea
                             dropzoneText="Drag and drop Logo here or click"
                             filesLimit={1}
-                            acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']
+                            acceptedFiles={
+                                ['image/jpeg', 'image/png', 'image/bmp']
                             }
+                            onChange={(files) => handleFileUploadChange(files)}
                         />
                     </Grid>
                     }
