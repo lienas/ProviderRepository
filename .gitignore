@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### K8-secrets ###
+/Deployment/aws-secret.yaml
+/Deployment/env-configmap.yaml
+/Deployment/env-secret.yaml
