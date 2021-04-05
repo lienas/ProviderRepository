@@ -17,7 +17,7 @@ spec:
       containers:
       - image: lienas/company-api
         name: company-api
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources:
           requests:
             memory: "64Mi"
@@ -26,42 +26,24 @@ spec:
             memory: "1024Mi"
             cpu: "500m"
         env:
-        - name: AWS_PROFILE
-          valueFrom:
-            configMapKeyRef:
-              name: env-config
-              key: AWS_PROFILE
-        - name: AWS_REGION
-          valueFrom:
-            configMapKeyRef:
-              name: env-config
-              key: AWS_REGION
         - name: MYSQL_DB_NAME
           valueFrom:
             configMapKeyRef:
-              name: env-config
+              name: prepo-env-config
               key: MYSQL_DB_NAME
         - name: MYSQL_URL
           valueFrom:
             configMapKeyRef:
-              name: env-config
+              name: prepo-env-config
               key: MYSQL_URL
         - name: MYSQL_PWD
           valueFrom:
             secretKeyRef:
-              name: env-secret
+              name: prepo-env-secret
               key: MYSQL_PWD
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
-              name: env-secret
+              name: prepo-env-secret
               key: MYSQL_USER
-        volumeMounts:
-        - name: aws-secret
-          mountPath: "/root/.aws/"
-          readOnly: true
       restartPolicy: Always
-      volumes:
-      - name: aws-secret
-        secret:
-          secretName: aws-secret
