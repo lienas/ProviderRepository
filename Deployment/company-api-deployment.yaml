@@ -38,12 +38,12 @@ spec:
               key: MYSQL_URL
         - name: MYSQL_PWD
           valueFrom:
-            secretKeyRef:
-              name: prepo-env-secret
+            configMapKeyRef:
+              name: prepo-env-config
               key: MYSQL_PWD
         - name: MYSQL_USER
           valueFrom:
-            secretKeyRef:
-              name: prepo-env-secret
+            configMapKeyRef:
+              name: prepo-env-config
               key: MYSQL_USER
       restartPolicy: Always

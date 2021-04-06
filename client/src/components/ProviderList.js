@@ -25,7 +25,7 @@ const ProviderList = () => {
     const [{data, isLoading, isError}, doFetch, method] = useProviderApi();
     const {isAuthenticated} = useAuth0();
     const {companies} = data && data._embedded ? data._embedded : [];
-    const {href} = data && !isLoading ? data._links.companies : [];
+    const {href} = data && !isLoading && !isError ? data._links.companies : [];
 
 //todo: put base url of api in config !!!
 
