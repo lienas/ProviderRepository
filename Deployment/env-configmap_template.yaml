@@ -1,0 +1,11 @@
+# replace placeholders and adjust name to meet configuration in company-api-deployment.yaml
+
+apiVersion: v1
+kind: ConfigMap
+data:
+  MYSQL_DB_NAME: "[database name]"
+  MYSQL_URL: "[url of db endpoint]"
+  MYSQL_USER: "[name of db user]"
+  MYSQL_PWD: "[db- password]"
+metadata:
+  name: prepo-env-config[-template]

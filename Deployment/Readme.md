@@ -22,3 +22,7 @@ API for client for CRUD operations on company objects
 ### upload service
 generate a presigned url to upload an image
 
+### Environments
+Environment vars are submitted by [config-map](env-configmap_template.yaml)
+
+

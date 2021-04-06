@@ -1,9 +1,33 @@
 #Provider-Repository Client
 This client delivers a React-SPA to manage the Provider-Repository for the Portal www.outsourcing.de.
-It depends on the WebServices-API of the repository
+It depends on the WebServices-API of the repository and the Upload-Service.
 
-For a good user-experience, we use **Material-UI** along with **Material-Table**.
+For a good user-experience, we use **Material-UI**.
+The Client was created using [Create React App](#getting-started-with-create-react-app)
 
+## configuration
+There are **2 configuration files** in folder `client/src/config`
+
+### auth0.js
+**auth0.js** is for  authentication and one for the endpoints 
+(if you change this configuration- you have also to change the security configuration in the company services)
+
+###endpoint.js
+This file contains the endpoints for the used services (company and upload)
+```
+//endpoint of serverless-app to get a presigned url to upload a logo
+// the signature of the endpoint is  [UPLOAD_URL]/logo/{id}/attachment
+export const S3_UPLOAD_URL =  "https://kkvpvkb0r1.execute-api.eu-central-1.amazonaws.com/dev"
+// the base url for the s3 bucket to fecth the logo
+// the signature of the endpoint is  [S3_DOWNLOAD_URL]/logo_{companyId}
+export const S3_DOWNLOAD_URL = "https://prepo-logo-dev.s3.eu-central-1.amazonaws.com"
+//endpoint for managing company entries
+export const COMPANY_SERVICE_URL = "http://prepo-api-test.outsourcing.de/api/companies" //"http://localhost:8080/api/companies"
+```
+
+## start client
+from the root folder run `npm install` and then `npm run start`.
+The client runs on port 3000.
 
 ## Getting Started with Create React App
 
