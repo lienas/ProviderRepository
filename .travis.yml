@@ -18,11 +18,12 @@ install:
 # Scripts to be run such as tests
 before_script:
   - echo "no tests"
-  - chmod +x ./CompanyService/mvnw
+  - cd ./CompanyService
+  - chmod +x ./mvnw
 
 script:
   - docker --version # print the version for logging
-  - ./CompanyService/mvnw spring-boot:build-image
+  - ./mvnw spring-boot:build-image
 
 # Tasks to perform after the process is successful.
 # Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
