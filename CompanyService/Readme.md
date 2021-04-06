@@ -8,33 +8,43 @@ The base data includes:
 - <span style="color:#c9d200">**city**</span> where the company resides
 - <span style="color:#c9d200">**country**</span> where the company resides
 - freetext to describe what the company does (<span style="color:#c9d200">**profile**</span>)
-- <span style="color:#c9d200">**logoUrl**</span> url to an logo
+- <span style="color:#c9d200">**logoUrl**</span> url to an logo stored in s3
 
-To Upload a logo the **Logo-Service-API** can be used.
-## Features
-
-
-## Security
+## EndpointSecurity
 Every User can read the profiles of all companies
-Creating a new profile is only allowed for registered users and logged in users.
+Creating a new profile is only allowed for registered and logged in users.
 Only the user who has created the profile can update or delete it.
 
-The API will use Auth0 for user management and token verification.
+App uses Spring security with integration to Auth0 for user management and token verification.
+
+The necessary configuration can be found in application.properties.
+
+```properties
+#new security config
+
+auth0.audience=https://provider-api
+auth0.domain=dev-osde.eu.auth0.com
+spring.security.oauth2.resourceserver.jwt.issuer-uri=https://${auth0.domain}/
+```
+
 ### configuration
-the following envelope vars are necessary to set up security:
-> todo: add enc-vars here
+the following envelope vars are necessary to set up security and database-connection:
+## MySQL Connection
+App was tested with mySQL 8 
+
+|envelope-var|description|
+|------------|------------|
+|MYSQL_URL| database endpoint|
+|MYSQL_DB_NAME|name of the database-must exist|
+|MYSQL_USER|name of the db-user with necessary privileges for the database|
+|MYSQL_PWD|password of the database user|
 
 ##endpoints
 The endpoint are accessible from the `[base-url]/api`
-### getAllCompanies
-GET: `[base-url]/api/companies{?page,size,sort}`
-this endpoint supports paging and sorting with optional url-parameters
-with 
-- page = requestes page number (default=0)
-- size = number of records to return (default =20)
-- sort = field for sorting (see [Introduction](#Introduction))
+### get all companies
+GET: `[base-url]/api/companies`
 
-### Get 1 Company
+### Get 1 vompany
 GET: `[base-url]/api/companies/{Id_Company}`
 
 ### Add a new company
@@ -49,6 +59,21 @@ with a json payload in the body
   "logoUrl": "[optional path to the logo of the company]"    
 }
 ```
+**_name_** is a required parameter
+
+### change a company
+PUT: `[base-url]/api/companies/{Id_Company}`
+with a json payload in the body 
+```json
+{
+  "name": "[name of the comapany]",
+  "city": "[city of residence]",
+  "country": "[country of residence]",
+  "profile": "[freetext to describe what the company does]",
+  "logoUrl": "[optional path to the logo of the company]"    
+}
+```
+
 ##Building the Backend
 ### Prerequisites
 ####Java Version
@@ -77,5 +102,10 @@ The image should be something like `prepo:[version]`
 Run the image with `docker run -p 8080:8080 prepo:0.0.1-SNAPSHOT` 
 (where 0.0.1-SNAPSHOT is the version)
 
-After you successfully started the image you can access the HAL-Explorer on http://localhost:8080
-![img.png](img.png)
+#### Kubernetes
+There is a configuration under Deployment to deploy the app to kubernetes.
+This configuration uses the public available docker-image `lienas/prepo-api:latest`
+
+#### CI
+There is also a **Travis-File** inside company-service to build new versions, 
+when pushed to main repository

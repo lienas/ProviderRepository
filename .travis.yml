@@ -1,0 +1,32 @@
+language: java
+jdk:
+  - openjdk11
+
+# safelist
+branches:
+  only:
+    - master
+    - stable
+
+services:
+  - docker
+
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
+script:
+  - docker --version # print the version for logging
+  - ./CompanyService/mvnw spring-boot:build-image
+
+# Tasks to perform after the process is successful.
+# Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
+# todo: check how to make the version dynamic
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker tag prepo:0.0.1-SNAPSHOT lienas/prepo-api-test
+  - docker push lienas/prepo-api-test
