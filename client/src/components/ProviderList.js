@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import ProviderCard from "./ProviderCard";
 import {Backdrop, CircularProgress, Grid, makeStyles} from "@material-ui/core";
 import {Link} from "react-router-dom";
@@ -30,7 +30,7 @@ const ProviderList = () => {
 //todo: put base url of api in config !!!
 
     useEffect(() => {
-        console.log("effect in Providerliest triggered");
+        console.log("effect in Providerlist triggered");
             method("get");
             doFetch(COMPANY_SERVICE_URL);
         }
@@ -39,7 +39,6 @@ const ProviderList = () => {
     const deleteHandler = (url) => {
         method("delete");
         doFetch(url);
-        //forceUpdate();
     }
 
     return (
